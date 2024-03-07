@@ -1,0 +1,48 @@
+{
+    "aviao" : [
+        {
+            "id" : "int",
+            "capacidade" : "int"
+        }
+    ],
+    "passageiro" : [
+        {
+            "id" : "int",
+            "nome" : "string",
+            "idade" : "int",
+            "id_reserva" : "int"  
+        }
+    ],
+    "piloto" : [
+        {
+            "id" : "int",
+            "nome" : "string",
+            "idade" : "int",
+            "id_voo" : "int"
+        }
+    ],
+    "reserva": [
+        {
+            "id" : "int",
+            "id_voo" : "int",
+            "id_passageiro" : "int",
+            "id_aviao" : "int",
+            "assento" : {
+                "ocupado" : "bool",
+                "numero" : "int"
+            }
+            
+        }
+    ],
+    "voo": [
+        {
+            "id" : "int",
+            "origem" : "string",
+            "destino" : "string",
+            "data" : "string",
+            "hora" : "string",
+            "id_aviao" : "int",
+            "id_piloto" : "int"
+        }
+    ]
+}
