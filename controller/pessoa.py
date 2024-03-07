@@ -1,14 +1,20 @@
+# ---------------------------------------------------------------#
+# IMPORTS PARA SER VISIVEIS BIBLIOTECAS EXTERNAS DA PASTAR RAIZ
 from sys import path
 from pathlib import Path
 SRC_PATH = Path(__file__).resolve().parent.parent
 path.append(str(SRC_PATH))
+# ---------------------------------------------------------------#
 
+from data.db import DB
 from model.pessoa import Passageiro, Piloto
+
 
 class PessoaController:
     def __init__(self):
         self.pessoas = []
 
+    # TODO: Modificar para inserir no banco
     def add(self, nome, idade, tipo):
         if tipo == 'Passageiro':
             pessoa = Passageiro(nome, idade)

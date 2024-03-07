@@ -1,7 +1,10 @@
+# ---------------------------------------------------------------#
+# IMPORTS PARA SER VISIVEIS BIBLIOTECAS EXTERNAS DA PASTAR RAIZ
 from sys import path
 from pathlib import Path
 SRC_PATH = Path(__file__).resolve().parent.parent
 path.append(str(SRC_PATH))
+# ---------------------------------------------------------------#
 
 from data.db import DB
 from model.aviao import Aviao

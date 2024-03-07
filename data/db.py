@@ -1,13 +1,3 @@
-from sys import path
-from pathlib import Path
-SRC_PATH = Path(__file__).resolve().parent.parent
-path.append(str(SRC_PATH))
-
-from model.aviao import Aviao
-from model.reserva import Reserva
-from model.voo import Voo
-from model.pessoa import Passageiro, Piloto
-
 import sqlite3
 
 class DB:
@@ -116,5 +106,4 @@ class DB:
 if __name__ == '__main__':
     db = DB()
     db.create_tables()
-    #print(f'[DEBUG] VALOR = {db.insert_assento(2,1)}')
     

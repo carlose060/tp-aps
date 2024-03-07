@@ -1,12 +1,6 @@
-
-# from controller.reserva import Reserva
-# from controller.voo import Voo
-# from controller.pessoa import Passageiro, Piloto
-
-from sys import exit
 from PyQt6.QtGui import QAction, QIntValidator
 from PyQt6.QtWidgets import (QComboBox, QGridLayout, QLabel, QLineEdit,
-                             QMainWindow, QMessageBox, QPushButton, QWidget, QInputDialog)
+        QMainWindow, QMessageBox, QPushButton, QWidget, QInputDialog)
 
 from view.aviao import AviaoView
 from controller.aviao import AviaoController

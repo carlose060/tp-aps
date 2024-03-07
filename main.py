@@ -4,11 +4,7 @@ from PyQt6.QtWidgets import QApplication
 from sys import argv
 
 
-
-
 if __name__ == '__main__':
-
-
     qt = QApplication(argv)
     app = Window()
     app.show()
