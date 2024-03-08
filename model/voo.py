@@ -1,9 +1,8 @@
-from uuid import uuid4
 
 
 class Voo:
-    def __init__(self, origem, destino, data, hora, id_aviao, piloto):
-        self.id = uuid4()
+    def __init__(self, id, origem, destino, data, hora, id_aviao, piloto):
+        self.id = id
         self.origem = origem
         self.destino = destino
         self.data = data
