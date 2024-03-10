@@ -14,6 +14,7 @@ from controller.assento import AssentoController
 class AviaoController:
     def __init__(self):
         self.avioes = []
+        self.assentos_controller = AssentoController()
 
     def add(self, capacidade):
         db = DB()

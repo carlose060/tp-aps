@@ -22,5 +22,10 @@ class AssentoController:
             self.assentos.append(Assento(id_assento, numero, id_aviao))
         db.close()
         
+    def update(self, id_assento, ocupado):
+        db = DB()
+        db.update_assento(id_assento, ocupado)
+        db.close()
+        
    
             

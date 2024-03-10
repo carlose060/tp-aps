@@ -13,45 +13,47 @@ CSS_TITLE = 'font-size: 25px; font-weight: bold'
 class PessoaView:
     
     @staticmethod
-    def telaCadastroPessoa(self):
+    def telaCadastroPessoa(janela):
         
-        self.setFixedSize(400,300)
-        self.limparTela()
+        janela.setFixedSize(400,300)
+        janela.limparTela()
         
-        self.criarBtn(QLabel,'CADASTRO DE PESSOA',0,3,3,12, CSS_TITLE)
+        janela.criarBtn(QLabel,'CADASTRO DE PESSOA',0,3,3,12, CSS_TITLE)
         
-        self.criarBtn(QLabel,'Nome:',3,0,3,6, CSS_BUTTON)
-        self.nomePessoa = self.criarBtn(QLineEdit,'',3,7,3,10, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Nome:',3,0,3,6, CSS_BUTTON)
+        janela.nomePessoa = janela.criarBtn(QLineEdit,'',3,7,3,10, CSS_BUTTON)
         
-        self.criarBtn(QLabel,'Idade:',6,0,3,6, CSS_BUTTON)
-        self.idadePessoa = self.criarBtn(QLineEdit,'',6,7,3,10, CSS_BUTTON)
-        self.idadePessoa.setValidator(QIntValidator())
+        janela.criarBtn(QLabel,'Idade:',6,0,3,6, CSS_BUTTON)
+        janela.idadePessoa = janela.criarBtn(QLineEdit,'',6,7,3,10, CSS_BUTTON)
+        janela.idadePessoa.setValidator(QIntValidator())
         
-        self.criarBtn(QLabel,'Tipo:',9,0,3,6, CSS_BUTTON)
-        self.tipoPessoa = self.criarBtn(QComboBox,'',9,7,3,10, CSS_BUTTON)
-        self.tipoPessoa.addItems(['Passageiro', 'Piloto'])
+        janela.criarBtn(QLabel,'Tipo:',9,0,3,6, CSS_BUTTON)
+        janela.tipoPessoa = QComboBox()
+        janela.tipoPessoa.addItems(['Passageiro', 'Piloto'])
+        janela.tipoPessoa.setStyleSheet("""width: 10px;height: 40%;font-size: 16px;""")
+        janela.grid.addWidget(janela.tipoPessoa, 9,7,3,10)      
         
     
-        self.criarBtn(QPushButton,'Cadastrar',12,0,3,6,CSS_BUTTON, self.ConcluirCadastroPessoa)
-        self.criarBtn(QPushButton,'Voltar',12,6,3,6,CSS_BUTTON, self.telaInicial)
+        janela.criarBtn(QPushButton,'Cadastrar',12,0,3,6,CSS_BUTTON, janela.concluirCadastroPessoa)
+        janela.criarBtn(QPushButton,'Voltar',12,6,3,6,CSS_BUTTON, janela.telaInicial)
 
     @staticmethod
-    def telaRemoverPessoa(self):
+    def telaRemoverPessoa(janela):
         
-        self.setFixedSize(400,300)
-        self.limparTela()
+        janela.setFixedSize(400,300)
+        janela.limparTela()
         
-        self.criarBtn(QLabel,'REMOÇÃO DE PESSOA',0,3,3,12, CSS_TITLE)
+        janela.criarBtn(QLabel,'REMOÇÃO DE PESSOA',0,3,3,12, CSS_TITLE)
         
-        self.criarBtn(QLabel,'Nome:',3,0,3,6, CSS_BUTTON)
-        self.pessoas_existentes = QComboBox()
-        self.pessoas_existentes.addItems(self.pessoas.get_all())
-        self.pessoas_existentes.setStyleSheet("""width: 10px;height: 40%;font-size: 16px;""")
-        self.grid.addWidget(self.pessoas_existentes, 3, 7, 3, 10)
+        janela.criarBtn(QLabel,'Nome:',3,0,3,6, CSS_BUTTON)
+        janela.pessoasExistentes = QComboBox()
+        janela.pessoasExistentes.addItems(janela.pessoas.get_all())
+        janela.pessoasExistentes.setStyleSheet("""width: 10px;height: 40%;font-size: 16px;""")
+        janela.grid.addWidget(janela.pessoasExistentes, 3, 7, 3, 10)
         
         
-        self.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, self.ConcluirRemoverPessoa)
-        self.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, self.telaInicial)
+        janela.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, janela.concluirRemoverPessoa)
+        janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.telaInicial)
         
         
 

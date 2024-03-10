@@ -7,6 +7,6 @@ class Reserva:
         self.assento = assento
     
     def __str__(self):
-        return f'Voo: {self.voo}, Assento: {self.assento.numero}'
+        return f'Voo: {self.voo}, Assento: {self.assento}'
       
        

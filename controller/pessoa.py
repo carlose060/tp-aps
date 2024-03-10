@@ -14,21 +14,49 @@ class PessoaController:
     def __init__(self):
         self.pessoas = []
 
-    # TODO: Modificar para inserir no banco
     def add(self, nome, idade, tipo):
+        db = DB()
         if tipo == 'Passageiro':
-            pessoa = Passageiro(nome, idade)
+            id_passageiro = db.insert_passageiro(nome, idade)
+            pessoa = Passageiro(id_passageiro, nome, idade)
         else:
-            pessoa = Piloto(nome, idade)
+            id_piloto = db.insert_piloto(nome, idade)
+            pessoa = Piloto(id_piloto, nome, idade)
         self.pessoas.append(pessoa)
+        db.close()
         return pessoa
+    
 
-    def get_all(self):
+    def get_all(self, tipo=None):
+        if tipo == 'Passageiro':
+            return [str(p.id)+f' | {p.nome}' for p in self.pessoas if type(p) == Passageiro and p.id_reserva is None]
+        elif tipo == 'Piloto':
+            return [str(p.id)+f' | {p.nome}' for p in self.pessoas if type(p) == Piloto and p.id_voo is None]
         return [str(p.nome) for p in self.pessoas]
     
-    def remove(self, nome_pessoa):
+    def remove(self, nome):
         for pessoa in self.pessoas:
-            if pessoa.nome == nome_pessoa:
+            if pessoa.nome == nome:
+                db = DB()
+                if type(pessoa) == Passageiro:
+                    db.remove_passageiro(nome)
+                else:
+                    db.remove_piloto(nome)
                 self.pessoas.remove(pessoa)
+                db.close()
                 return True
+        return False
+
+    def update(self, id_pessoa, id_reserva=None, id_voo=None):
+        for pessoa in self.pessoas:
+            if pessoa.id == int(id_pessoa):
+                db = DB()
+                if type(pessoa) == Passageiro:
+                    db.update_passageiro(id_pessoa, id_reserva)
+                    db.close()
+                    return True
+                elif type(pessoa) == Piloto:
+                    db.update_piloto(id_pessoa, id_voo)
+                    db.close()
+                    return True    
         return False

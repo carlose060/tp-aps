@@ -11,8 +11,7 @@ class DB:
             raise e
         
     def execute(self, sql):
-        res = self.cursor.execute(sql)
-        return res.fetchall()
+        self.cursor.execute(sql)
         
     def commit(self):    
         self.conn.commit()
@@ -39,6 +38,71 @@ class DB:
         ''')
         self.commit()
         return self.cursor.lastrowid
+    
+    def update_assento(self, id_assento, ocupado):
+        self.execute(f'''
+            UPDATE assento SET ocupado = {ocupado} WHERE id = {id_assento}
+        ''')
+        self.commit()
+    
+    def insert_passageiro(self, nome, idade):
+        self.execute(f'''
+            INSERT INTO passageiro (nome, idade) VALUES ('{nome}', {idade})
+        ''')
+        self.commit()
+        return self.cursor.lastrowid
+    
+    def update_passageiro(self, id_passageiro, id_reserva):
+        self.execute(f'''
+            UPDATE passageiro SET id_reserva = {id_reserva} WHERE id = {id_passageiro}
+        ''')
+        self.commit()
+    
+    def remove_passageiro(self, nome_pessoa):
+        self.execute(f'''
+            DELETE FROM passageiro WHERE nome = {nome_pessoa}
+        ''')
+        self.commit()
+    
+    def insert_piloto(self, nome, idade):
+        self.execute(f'''
+            INSERT INTO piloto (nome, idade) VALUES ('{nome}', {idade})
+        ''')
+        self.commit()
+        return self.cursor.lastrowid
+    
+    def update_piloto(self, id_piloto, id_voo):
+        self.execute(f'''
+            UPDATE piloto SET id_voo = {id_voo} WHERE id = {id_piloto}
+        ''')
+        self.commit()
+    
+    def remove_piloto(self, nome_pessoa):
+        self.execute(f'''
+            DELETE FROM piloto WHERE nome = {nome_pessoa}
+        ''')
+        self.commit()
+    
+    def insert_voo(self, origem, destino, data, id_aviao, id_piloto):
+        self.execute(f'''
+            INSERT INTO voo (origem, destino, data, id_aviao, id_piloto) VALUES ('{origem}', '{destino}', '{data}', {id_aviao}, {id_piloto})
+        ''')
+        self.commit()
+        return self.cursor.lastrowid
+    
+    def remove_voo(self, id_voo):
+        self.execute(f'''
+            DELETE FROM voo WHERE id = {id_voo}
+        ''')
+        self.commit()
+    
+    def insert_reserva(self, id_voo, id_assento):
+        self.execute(f'''
+            INSERT INTO reserva (id_voo, id_assento) VALUES ({id_voo}, {id_assento})
+        ''')
+        self.commit()
+        return self.cursor.lastrowid
+        
     
         
         
@@ -67,12 +131,13 @@ class DB:
                 FOREIGN KEY(id_assento) REFERENCES assento(id) ON DELETE CASCADE
             )
         ''')
+        self.execute('''drop table if exists passageiro''')
         self.execute('''
             CREATE TABLE IF NOT EXISTS passageiro (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
                 idade INTEGER NOT NULL,
-                id_reserva INTEGER NOT NULL,
+                id_reserva INTEGER,
                 FOREIGN KEY(id_reserva) REFERENCES reserva(id) ON DELETE SET NULL
             )
         ''')
@@ -82,19 +147,19 @@ class DB:
                 origem TEXT NOT NULL,
                 destino TEXT NOT NULL,
                 data TEXT NOT NULL,
-                aviao_id INTEGER NOT NULL,
                 id_aviao INTEGER NOT NULL,
                 id_piloto INTEGER NOT NULL,
                 FOREIGN KEY(id_aviao) REFERENCES aviao(id) ON DELETE SET NULL
                 FOREIGN KEY(id_piloto) REFERENCES piloto(id) ON DELETE SET NULL
             )
         ''')
+        self.execute(''' drop table if exists piloto''')
         self.execute('''
             CREATE TABLE IF NOT EXISTS piloto (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
                 idade INTEGER NOT NULL,
-                id_voo INTEGER NOT NULL,
+                id_voo INTEGER,
                 FOREIGN KEY(id_voo) REFERENCES voo(id) ON DELETE SET NULL
             )
         ''')
