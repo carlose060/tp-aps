@@ -70,3 +70,29 @@ class VooView:
         
         janela.criarBtn(QPushButton,'Remover',6,0,3,6,CSS_BUTTON, janela.concluirRemoverVoo)
         janela.criarBtn(QPushButton,'Voltar',6,6,3,6,CSS_BUTTON, janela.telaInicial)
+        
+    @staticmethod
+    def telaVerVoo(janela):
+        janela.setFixedSize(600,300)
+        janela.limparTela()
+        
+        janela.criarBtn(QLabel,'VOOS',0,3,3,12, CSS_TITLE)
+        
+        row = 3
+        janela.criarBtn(QLabel,'Id',row,0,3,5, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Origem',row,5,3,6, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Destino',row,11,3,6, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Data',row,17,3,6, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Aviao',row,23,3,6, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Piloto',row,27,3,6, CSS_BUTTON)
+        row += 3
+        for voo in janela.voos.voos:
+            janela.criarBtn(QLabel,str(voo.id),row,0,3,5, CSS_BUTTON)
+            janela.criarBtn(QLabel,voo.origem,row,5,3,6, CSS_BUTTON)
+            janela.criarBtn(QLabel,voo.destino,row,11,3,6, CSS_BUTTON)
+            janela.criarBtn(QLabel,voo.data,row,17,3,6, CSS_BUTTON)
+            janela.criarBtn(QLabel,str(voo.aviao.id),row,23,3,6, CSS_BUTTON)
+            janela.criarBtn(QLabel,voo.piloto.nome,row,27,3,6, CSS_BUTTON)
+            row += 3
+        
+        janela.criarBtn(QPushButton,'Voltar',row,0,3,6,CSS_BUTTON, janela.telaInicial)

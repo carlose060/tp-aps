@@ -55,6 +55,32 @@ class PessoaView:
         janela.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, janela.concluirRemoverPessoa)
         janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.telaInicial)
         
+    
+    @staticmethod
+    def telaVerPessoa(janela):
+        janela.setFixedSize(400,300)
+        janela.limparTela()
         
+        janela.criarBtn(QLabel,'VER PESSOAS',0,3,3,12, CSS_TITLE)
+        
+        row = 3
+        janela.criarBtn(QLabel,'Id',row,0,3,5, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Nome',row,5,3,6, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Idade',row,11,3,6, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Tipo',row,17,3,6, CSS_BUTTON)
+        row += 3
+        for pessoa in janela.pessoas.pessoas:
+            try: 
+                _ =  pessoa.voo
+                tipo = 'Piloto'
+            except:
+                tipo = 'Passageiro'
+            
+            janela.criarBtn(QLabel,str(pessoa.id),row,0,3,5, CSS_BUTTON)
+            janela.criarBtn(QLabel,pessoa.nome,row,5,3,6, CSS_BUTTON)
+            janela.criarBtn(QLabel,str(pessoa.idade),row,11,3,6, CSS_BUTTON)
+            janela.criarBtn(QLabel,tipo,row,17,3,6, CSS_BUTTON)
+            row += 3
+        janela.criarBtn(QPushButton,'Voltar',row,0,3,6,CSS_BUTTON, janela.telaInicial)
 
     

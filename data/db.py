@@ -217,5 +217,5 @@ class DB:
 
 if __name__ == '__main__':
     db = DB()
-    #db.create_tables()
-    db.load_data()
+    db.create_tables()
+    #db.load_data()

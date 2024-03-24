@@ -55,15 +55,15 @@ class Window(QMainWindow):
        
         self.criarBtn(QPushButton,'Cadastrar avião',3,0,3,7,CSS_BUTTON, lambda: AviaoView.telaCadastroAviao(self))
         self.criarBtn(QPushButton,'Remover avião',3,7,3,7,CSS_BUTTON,  lambda: AviaoView.telaRemoverAviao(self))
-        self.criarBtn(QPushButton,'Visualizar aviões',3,14,3,7,CSS_BUTTON,)
+        self.criarBtn(QPushButton,'Visualizar aviões',3,14,3,7,CSS_BUTTON, lambda: AviaoView.telaVerAviao(self))
         
         self.criarBtn(QPushButton,'Cadastrar pessoa',6,0,3,7,CSS_BUTTON, lambda: PessoaView.telaCadastroPessoa(self))
         self.criarBtn(QPushButton,'Remover pessoa',6,7,3,7,CSS_BUTTON, lambda: PessoaView.telaRemoverPessoa(self))
-        self.criarBtn(QPushButton,'Visualizar pessoas',6,14,3,7,CSS_BUTTON, )
+        self.criarBtn(QPushButton,'Visualizar pessoas',6,14,3,7,CSS_BUTTON, lambda: PessoaView.telaVerPessoa(self))
         
         self.criarBtn(QPushButton,'Cadastrar voo',9,0,3,7,CSS_BUTTON, lambda: VooView.telaCadastroVoo(self))
         self.criarBtn(QPushButton,'Remover voo',9,7,3,7,CSS_BUTTON, lambda: VooView.telaRemoverVoo(self))
-        self.criarBtn(QPushButton,'Visualizar voos',9,14,3,7,CSS_BUTTON, )
+        self.criarBtn(QPushButton,'Visualizar voos',9,14,3,7,CSS_BUTTON, lambda: VooView.telaVerVoo(self))
         
         self.criarBtn(QPushButton,'Fazer reservas',12,0,3,7,CSS_BUTTON, lambda: ReservaView.telaFazerReserva(self))
         self.criarBtn(QPushButton,'Alterar reservas',12,7,3,7,CSS_BUTTON)

@@ -46,6 +46,22 @@ class AviaoView:
         janela.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, janela.concluirRemoverAviao)
         janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.telaInicial)
         
+    @staticmethod
+    def telaVerAviao(janela):
+        janela.setFixedSize(400,300)
+        janela.limparTela()
+        
+        janela.criarBtn(QLabel,'VER AVIÕES',0,3,3,12, CSS_TITLE)
+        
+        row = 3
+        janela.criarBtn(QLabel,'Id',row,0,3,5, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Capacidade',row,5,3,5, CSS_BUTTON)
+        row += 3
+        for aviao in janela.avioes.avioes:
+            janela.criarBtn(QLabel,str(aviao.id),row,0,3,5, CSS_BUTTON)
+            janela.criarBtn(QLabel,str(aviao.capacidade),row,5,3,5, CSS_BUTTON)
+            row += 3
+        janela.criarBtn(QPushButton,'Voltar',row,0,3,6,CSS_BUTTON, janela.telaInicial)
         
 
     
