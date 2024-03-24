@@ -63,7 +63,7 @@ class VooView:
         
         janela.criarBtn(QLabel,'Voos:',3,0,3,6, CSS_BUTTON)
         janela.voosExistentes = QComboBox()
-        janela.voosExistentes.addItems(janela.avioes.get_all())
+        janela.voosExistentes.addItems(janela.voos.get_all())
         janela.voosExistentes.setStyleSheet("""width: 10px;height: 40%;font-size: 16px;""")
         janela.grid.addWidget(janela.voosExistentes, 3, 7, 3, 10)
         

@@ -26,12 +26,33 @@ class PessoaController:
         db.close()
         return pessoa
     
+    def load_piloto(self, id_piloto, nome, idade):
+        pessoa = Piloto(id_piloto, nome, idade)
+        self.pessoas.append(pessoa)
+        return pessoa
 
+    def load_passageiro(self, id_passageiro, nome, idade, reserva):
+        pessoa = Passageiro(id_passageiro, nome, idade, reserva)
+        self.pessoas.append(pessoa)
+        return pessoa
+        
+    def get(self, id_pessoa):
+        for pessoa in self.pessoas:
+            if pessoa.id == int(id_pessoa):
+                return pessoa
+            
+    def get_with_voo(self, id_voo):
+        for pessoa in self.pessoas:
+            if type(pessoa) == Piloto:
+                if pessoa.voo.id == int(id_voo):
+                    return pessoa
+        return None
+    
     def get_all(self, tipo=None):
         if tipo == 'Passageiro':
-            return [str(p.id)+f' | {p.nome}' for p in self.pessoas if type(p) == Passageiro and p.id_reserva is None]
+            return [str(p.id)+f' | {p.nome}' for p in self.pessoas if type(p) == Passageiro and p.reserva is None]
         elif tipo == 'Piloto':
-            return [str(p.id)+f' | {p.nome}' for p in self.pessoas if type(p) == Piloto and p.id_voo is None]
+            return [str(p.id)+f' | {p.nome}' for p in self.pessoas if type(p) == Piloto and p.voo is None]
         return [str(p.nome) for p in self.pessoas]
     
     def remove(self, nome):
@@ -47,16 +68,18 @@ class PessoaController:
                 return True
         return False
 
-    def update(self, id_pessoa, id_reserva=None, id_voo=None):
+    def update(self, id_pessoa, reserva=None, voo=None):
         for pessoa in self.pessoas:
             if pessoa.id == int(id_pessoa):
                 db = DB()
                 if type(pessoa) == Passageiro:
-                    db.update_passageiro(id_pessoa, id_reserva)
+                    pessoa.reserva = reserva
+                    db.update_passageiro(id_pessoa, reserva.id)
                     db.close()
                     return True
                 elif type(pessoa) == Piloto:
-                    db.update_piloto(id_pessoa, id_voo)
+                    pessoa.voo = voo
+                    db.update_piloto(id_pessoa, voo.id)
                     db.close()
                     return True    
         return False

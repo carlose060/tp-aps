@@ -105,6 +105,54 @@ class DB:
         
     
         
+    def load_data(self, avioes, pessoas, voos, reservas):
+        self.execute('''
+            SELECT * FROM aviao
+        ''')
+        list_avioes = self.cursor.fetchall()
+        for row in list_avioes:
+            id_aviao, capacidade = row
+            self.execute(f'''
+                SELECT * FROM assento WHERE id_aviao = {id_aviao}
+            ''')
+            list_assentos = self.cursor.fetchall()
+            avioes.load(id_aviao, capacidade, list_assentos)
+        self.execute('''
+            SELECT * FROM piloto
+        ''')
+        list_piloto = self.cursor.fetchall()
+        for row in list_piloto:
+            id_piloto, nome, idade, id_voo = row
+            pessoa_carregada = pessoas.load_piloto(id_piloto, nome, idade)
+            if id_voo:
+                self.execute(f'''
+                    SELECT * FROM voo WHERE id = {id_voo}
+                ''')
+                voo = self.cursor.fetchone()
+                id_voo, origem, destino, data, id_aviao, id_piloto = voo
+                aviao = avioes.get(id_aviao)
+                voo = voos.load(id_voo, origem, destino, data, aviao, pessoa_carregada)
+                pessoa_carregada.voo = voo
+                self.execute(f'''
+                    SELECT * FROM reserva WHERE id_voo = {id_voo}
+                ''')
+                reservas_voo = self.cursor.fetchall()
+                for reserva in reservas_voo:
+                    id_reserva, id_voo, id_assento = reserva
+                    assento = avioes.assentos_controller.get(id_assento)
+                    reservas.load(id_reserva, voo, assento)
+        self.execute('''
+            SELECT * FROM passageiro
+        ''')
+        passageiros = self.cursor.fetchall()
+        for row in passageiros:
+            id_passageiro, nome, idade, id_reserva = row
+            reserva = None
+            if id_reserva:
+                reserva = reservas.get_with_id(id_reserva)
+            pessoa_carregada = pessoas.load_passageiro(id_passageiro, nome, idade, reserva)
+             
+        self.close()
         
     def create_tables(self):
         self.execute('''
@@ -131,7 +179,7 @@ class DB:
                 FOREIGN KEY(id_assento) REFERENCES assento(id) ON DELETE CASCADE
             )
         ''')
-        self.execute('''drop table if exists passageiro''')
+       
         self.execute('''
             CREATE TABLE IF NOT EXISTS passageiro (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -153,7 +201,6 @@ class DB:
                 FOREIGN KEY(id_piloto) REFERENCES piloto(id) ON DELETE SET NULL
             )
         ''')
-        self.execute(''' drop table if exists piloto''')
         self.execute('''
             CREATE TABLE IF NOT EXISTS piloto (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -170,5 +217,5 @@ class DB:
 
 if __name__ == '__main__':
     db = DB()
-    db.create_tables()
-    
+    #db.create_tables()
+    db.load_data()

@@ -19,8 +19,8 @@ class ReservaView:
         
         id_voo_selecionado = janela.vooExistentes.currentText().split(' | ')[0]
         voo_selecionado = janela.voos.get(id_voo_selecionado)
-        id_aviao_selecionado = voo_selecionado.id_aviao
-        aviao_selecionado = janela.avioes.get(id_aviao_selecionado)
+        
+        aviao_selecionado = voo_selecionado.aviao
         
         id_passageiro_selecionado = janela.passageirosExistentes.currentText().split(' | ')[0]
         janela.id_voo_selecionado = id_voo_selecionado

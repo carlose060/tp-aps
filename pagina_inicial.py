@@ -14,6 +14,8 @@ from controller.voo import VooController
 from view.reserva import ReservaView
 from controller.reserva import ReservaController
 
+from data.db import DB
+
 CSS_BUTTON = """
     font-size: 20px;
     width: 100%;
@@ -38,6 +40,8 @@ class Window(QMainWindow):
         self.pessoas = PessoaController()
         self.voos = VooController()
         self.reservas = ReservaController()
+        db = DB()
+        db.load_data(self.avioes, self.pessoas, self.voos, self.reservas)
         self.telaInicial()
     
     
@@ -49,17 +53,20 @@ class Window(QMainWindow):
         self.criarBtn(QLabel,'SEJA BEM-VINDO',0,9,3,4, CSS_TITLE)
 
        
-        self.criarBtn(QPushButton,'Cadastrar avião',3,4,3,7,CSS_BUTTON, lambda: AviaoView.telaCadastroAviao(self))
-        self.criarBtn(QPushButton,'Remover avião',3,11,3,7,CSS_BUTTON,  lambda: AviaoView.telaRemoverAviao(self))
+        self.criarBtn(QPushButton,'Cadastrar avião',3,0,3,7,CSS_BUTTON, lambda: AviaoView.telaCadastroAviao(self))
+        self.criarBtn(QPushButton,'Remover avião',3,7,3,7,CSS_BUTTON,  lambda: AviaoView.telaRemoverAviao(self))
+        self.criarBtn(QPushButton,'Visualizar aviões',3,14,3,7,CSS_BUTTON,)
         
-        self.criarBtn(QPushButton,'Cadastrar pessoas',6,4,3,7,CSS_BUTTON, lambda: PessoaView.telaCadastroPessoa(self))
-        self.criarBtn(QPushButton,'Remover pessoas',6,11,3,7,CSS_BUTTON, lambda: PessoaView.telaRemoverPessoa(self))
+        self.criarBtn(QPushButton,'Cadastrar pessoa',6,0,3,7,CSS_BUTTON, lambda: PessoaView.telaCadastroPessoa(self))
+        self.criarBtn(QPushButton,'Remover pessoa',6,7,3,7,CSS_BUTTON, lambda: PessoaView.telaRemoverPessoa(self))
+        self.criarBtn(QPushButton,'Visualizar pessoas',6,14,3,7,CSS_BUTTON, )
         
-        self.criarBtn(QPushButton,'Cadastrar voos',9,4,3,7,CSS_BUTTON, lambda: VooView.telaCadastroVoo(self))
-        self.criarBtn(QPushButton,'Remover voos',9,11,3,7,CSS_BUTTON, lambda: VooView.telaRemoverVoo(self))
+        self.criarBtn(QPushButton,'Cadastrar voo',9,0,3,7,CSS_BUTTON, lambda: VooView.telaCadastroVoo(self))
+        self.criarBtn(QPushButton,'Remover voo',9,7,3,7,CSS_BUTTON, lambda: VooView.telaRemoverVoo(self))
+        self.criarBtn(QPushButton,'Visualizar voos',9,14,3,7,CSS_BUTTON, )
         
-        self.criarBtn(QPushButton,'Fazer reservas',12,4,3,7,CSS_BUTTON, lambda: ReservaView.telaFazerReserva(self))
-        self.criarBtn(QPushButton,'Alterar reservas',12,11,3,7,CSS_BUTTON)
+        self.criarBtn(QPushButton,'Fazer reservas',12,0,3,7,CSS_BUTTON, lambda: ReservaView.telaFazerReserva(self))
+        self.criarBtn(QPushButton,'Alterar reservas',12,7,3,7,CSS_BUTTON)
           
         
     def concluirCadastroAviao(self):
@@ -104,25 +111,40 @@ class Window(QMainWindow):
         origem = self.origemVoo.text()
         destino = self.destinoVoo.text()
         data = self.dataVoo.text() # TODO: split(' ') para separada data e hora
-         
         info_piloto = self.pilotoVoo.currentText()  
         aviao = self.aviaoVoo.currentText()
+        
         if not origem or not destino or not data or not info_piloto or not aviao:
             QMessageBox.warning(self.cw, 'Erro', 'Algum dado não informado')
             return VooView.telaCadastroVoo(self)
-       
-        voo_criado = self.voos.add(origem, destino, data, aviao, info_piloto)
+
+        info_piloto, _ = info_piloto.split(' | ')
         aviao_voo = self.avioes.get(aviao)
-        self.reservas.add(aviao_voo.assentos, voo_criado.id)
+        piloto_voo = self.pessoas.get(info_piloto)
+        
+        voo_criado = self.voos.add(origem, destino, data, aviao_voo, piloto_voo)
+        self.pessoas.update(piloto_voo.id, voo=voo_criado)
+        piloto_voo.voo = voo_criado
+        
+        self.reservas.add(aviao_voo.assentos, voo_criado)
+        
         self.telaInicial()
         QMessageBox.information(self.cw, 'Ação concluida', 'Voo Cadastrado com sucesso!')
         
     def concluirRemoverVoo(self):
         info_voo = self.voosExistentes.currentText()
+        info_voo, _ = info_voo.split(' | ')
         if not info_voo:
             QMessageBox.warning(self.cw, 'Erro', 'Voo não informado')
             return VooView.telaRemoverVoo(self)
-        self.voos.remove(info_voo)
+        
+        voo_selecionado = self.voos.get(info_voo)
+        
+        piloto_voo = self.pessoas.get_with_voo(voo_selecionado.id)
+        piloto_voo.voo = None
+        self.pessoas.update(piloto_voo.id, voo=None)
+        
+        self.voos.remove(voo_selecionado)
         self.telaInicial()
         QMessageBox.information(self.cw, 'Ação concluida', 'Voo Removido com sucesso!')
         
@@ -131,9 +153,9 @@ class Window(QMainWindow):
         assento = self.dict_assentos[numero_assento_selecionado]
         
         reserva = self.reservas.get(assento.id, self.id_voo_selecionado) 
-        self.pessoas.update(self.id_passageiro_selecionado, id_reserva=reserva.id)
-        assento.ocupado = True
-        self.avioes.assentos_controller.update(assento.id, ocupado=True)
+        self.pessoas.update(self.id_passageiro_selecionado, reserva=reserva)
+        
+        self.avioes.assentos_controller.update(assento, ocupado=True)
         QMessageBox.information(self.cw, 'Ação concluida', 'Reserva feita com sucesso!')
         return self.telaInicial()
 

@@ -20,16 +20,21 @@ class AviaoController:
         db = DB()
         id_aviao = db.insert_aviao(capacidade)
         db.close()
-        assentos_controller = AssentoController()
-        assentos_controller.add(capacidade, id_aviao)
         
-        aviao = Aviao(id_aviao, capacidade, assentos_controller.assentos)
+        self.assentos_controller.add(capacidade, id_aviao)
+        
+        aviao = Aviao(id_aviao, capacidade, self.assentos_controller.assentos)
         self.avioes.append(aviao)
         return aviao
+    
+    def load(self, id, capacidade, list_assentos):
+        self.assentos_controller.load(list_assentos)
+        aviao = Aviao(id, capacidade, self.assentos_controller.assentos)
+        self.avioes.append(aviao)
 
     def get(self, id_aviao):
         for aviao in self.avioes:
-            if str(aviao.id) == id_aviao:
+            if str(aviao.id) == str(id_aviao):
                 return aviao
         return None
 

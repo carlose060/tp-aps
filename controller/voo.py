@@ -15,13 +15,18 @@ class VooController:
     def __init__(self):
         self.voos = []
         
-    def add(self, origem, destino, data, id_aviao, info_piloto):
+    def add(self, origem, destino, data, aviao, piloto):
         db = DB()
-        id_piloto, _ = info_piloto.split(' | ')
-        id_voo = db.insert_voo(origem, destino, data, id_aviao, id_piloto)
-        voo = Voo(id_voo, origem, destino, data, id_aviao, id_piloto)
+       
+        id_voo = db.insert_voo(origem, destino, data, aviao.id, piloto.id)
+        voo = Voo(id_voo, origem, destino, data, aviao, piloto)
         self.voos.append(voo)
         db.close()
+        return voo
+    
+    def load(self, id_voo, origem, destino, data, aviao, piloto):
+        voo = Voo(id_voo, origem, destino, data, aviao, piloto)
+        self.voos.append(voo)
         return voo
     
     def get(self, id_voo):
