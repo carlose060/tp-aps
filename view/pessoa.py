@@ -10,10 +10,9 @@ CSS_BUTTON = """
 CSS_TITLE = 'font-size: 25px; font-weight: bold'
 
 
-class PessoaView:
+class TelaCadastroPessoa:
     
-    @staticmethod
-    def telaCadastroPessoa(janela):
+    def __init__(janela):
         
         janela.setFixedSize(400,300)
         janela.limparTela()
@@ -27,18 +26,22 @@ class PessoaView:
         janela.idadePessoa = janela.criarBtn(QLineEdit,'',6,7,3,10, CSS_BUTTON)
         janela.idadePessoa.setValidator(QIntValidator())
         
-        janela.criarBtn(QLabel,'Tipo:',9,0,3,6, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Carteira:',9,0,3,6, CSS_BUTTON)
+        janela.numeroCarteira = janela.criarBtn(QLineEdit,'',9,7,3,10, CSS_BUTTON)
+        
+        janela.criarBtn(QLabel,'Tipo:',12,0,3,6, CSS_BUTTON)
         janela.tipoPessoa = QComboBox()
         janela.tipoPessoa.addItems(['Passageiro', 'Piloto'])
         janela.tipoPessoa.setStyleSheet("""width: 10px;height: 40%;font-size: 16px;""")
-        janela.grid.addWidget(janela.tipoPessoa, 9,7,3,10)      
+        janela.grid.addWidget(janela.tipoPessoa, 12,7,3,10)      
         
     
-        janela.criarBtn(QPushButton,'Cadastrar',12,0,3,6,CSS_BUTTON, janela.concluirCadastroPessoa)
-        janela.criarBtn(QPushButton,'Voltar',12,6,3,6,CSS_BUTTON, janela.telaInicial)
+        janela.criarBtn(QPushButton,'Cadastrar',15,0,3,6,CSS_BUTTON, janela.concluirCadastroPessoa)
+        janela.criarBtn(QPushButton,'Voltar',15,6,3,6,CSS_BUTTON, janela.telaInicial)
 
-    @staticmethod
-    def telaRemoverPessoa(janela):
+class TelaRemoverPessoa:
+    
+    def __init__(janela):
         
         janela.setFixedSize(400,300)
         janela.limparTela()
@@ -56,8 +59,9 @@ class PessoaView:
         janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.telaInicial)
         
     
-    @staticmethod
-    def telaVerPessoa(janela):
+class TelaVerPessoa:
+    
+    def __init__(janela):
         janela.setFixedSize(400,300)
         janela.limparTela()
         
@@ -71,7 +75,7 @@ class PessoaView:
         row += 3
         for pessoa in janela.pessoas.pessoas:
             try: 
-                _ =  pessoa.voo
+                _ =  pessoa.numero_carteira
                 tipo = 'Piloto'
             except:
                 tipo = 'Passageiro'

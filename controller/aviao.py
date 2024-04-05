@@ -8,29 +8,21 @@ path.append(str(SRC_PATH))
 
 from data.db import DB
 from model.aviao import Aviao
-from controller.assento import AssentoController
+
 
 
 class AviaoController:
-    def __init__(self):
-        self.avioes = []
-        self.assentos_controller = AssentoController()
 
-    def add(self, capacidade):
+
+    def add(self, capacidade, modelo):
         db = DB()
         id_aviao = db.insert_aviao(capacidade)
         db.close()
-        
-        self.assentos_controller.add(capacidade, id_aviao)
-        
-        aviao = Aviao(id_aviao, capacidade, self.assentos_controller.assentos)
-        self.avioes.append(aviao)
+               
+        aviao = Aviao(id_aviao, capacidade, modelo)
+
         return aviao
-    
-    def load(self, id, capacidade, list_assentos):
-        self.assentos_controller.load(list_assentos)
-        aviao = Aviao(id, capacidade, self.assentos_controller.assentos)
-        self.avioes.append(aviao)
+
 
     def get(self, id_aviao):
         for aviao in self.avioes:
@@ -41,14 +33,5 @@ class AviaoController:
     def get_all(self):
         return [str(av.id) for av in self.avioes]
     
-    def remove(self, id_aviao):
-        for aviao in self.avioes:
-            if str(aviao.id) == id_aviao:
-                self.avioes.remove(aviao)
-                db = DB()
-                db.remove_aviao(id_aviao)
-                db.close()
-                return True
-        return False
 
    

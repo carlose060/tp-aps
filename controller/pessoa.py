@@ -11,8 +11,7 @@ from model.pessoa import Passageiro, Piloto
 
 
 class PessoaController:
-    def __init__(self):
-        self.pessoas = []
+
 
     def add(self, nome, idade, tipo):
         db = DB()
@@ -22,31 +21,22 @@ class PessoaController:
         else:
             id_piloto = db.insert_piloto(nome, idade)
             pessoa = Piloto(id_piloto, nome, idade)
-        self.pessoas.append(pessoa)
         db.close()
         return pessoa
     
     def load_piloto(self, id_piloto, nome, idade):
         pessoa = Piloto(id_piloto, nome, idade)
-        self.pessoas.append(pessoa)
         return pessoa
 
     def load_passageiro(self, id_passageiro, nome, idade, reserva):
         pessoa = Passageiro(id_passageiro, nome, idade, reserva)
-        self.pessoas.append(pessoa)
         return pessoa
         
     def get(self, id_pessoa):
         for pessoa in self.pessoas:
             if pessoa.id == int(id_pessoa):
                 return pessoa
-            
-    def get_with_voo(self, id_voo):
-        for pessoa in self.pessoas:
-            if type(pessoa) == Piloto:
-                if pessoa.voo.id == int(id_voo):
-                    return pessoa
-        return None
+
     
     def get_all(self, tipo=None):
         if tipo == 'Passageiro':
@@ -63,7 +53,6 @@ class PessoaController:
                     db.remove_passageiro(nome)
                 else:
                     db.remove_piloto(nome)
-                self.pessoas.remove(pessoa)
                 db.close()
                 return True
         return False
