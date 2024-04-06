@@ -47,16 +47,11 @@ class DB:
     
     def insert_passageiro(self, nome, idade):
         self.execute(f'''
-            INSERT INTO passageiro (nome, idade, id_reserva) VALUES ('{nome}', {idade}, NULL)
+            INSERT INTO passageiro (nome, idade) VALUES ('{nome}', {idade})
         ''')
         self.commit()
         return self.cursor.lastrowid
     
-    def update_passageiro(self, id_passageiro, id_reserva):
-        self.execute(f'''
-            UPDATE passageiro SET id_reserva = {id_reserva} WHERE id = {id_passageiro}
-        ''')
-        self.commit()
     
     def remove_passageiro(self, id):
         self.execute(f'''

@@ -1,6 +1,4 @@
-from PyQt6.QtGui import QAction, QIntValidator
-from PyQt6.QtWidgets import (QComboBox, QGridLayout, QLabel, QLineEdit,
-        QMainWindow, QMessageBox, QPushButton, QWidget, QInputDialog)
+from PyQt6.QtWidgets import QGridLayout, QLabel, QMainWindow, QMessageBox, QPushButton, QWidget
 
 from view.aviao import TelaCadastroAviao, TelaRemoverAviao, TelaVerAviao
 from controller.aviao import AviaoController

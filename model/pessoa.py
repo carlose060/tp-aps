@@ -8,11 +8,9 @@ class Pessoa:
 
     
 class Passageiro(Pessoa):
-    def __init__(self, id, nome, idade, reserva = None):
+    def __init__(self, id, nome, idade):
         super().__init__(id ,nome, idade)
-        self.reserva = reserva
         
-    
 
 class Piloto(Pessoa):
     def __init__(self, id, nome, idade, numero_carteira):        

@@ -23,12 +23,6 @@ class AviaoController:
         return True
 
 
-    def get(self, id_aviao):
-        for aviao in self.avioes:
-            if str(aviao.id) == str(id_aviao):
-                return aviao
-        return None
-
     def get_all(self):
         db = DB()
         avioes = db.get_all_avioes()
