@@ -15,13 +15,12 @@ class AviaoController:
 
 
     def add(self, capacidade, modelo):
+        aviao = Aviao(0, capacidade, modelo)
         db = DB()
-        id_aviao = db.insert_aviao(capacidade)
+        id_aviao = db.insert_aviao(aviao)
         db.close()
-               
-        aviao = Aviao(id_aviao, capacidade, modelo)
-
-        return aviao
+        aviao.id = id_aviao
+        return True
 
 
     def get(self, id_aviao):
@@ -31,7 +30,18 @@ class AviaoController:
         return None
 
     def get_all(self):
-        return [str(av.id) for av in self.avioes]
+        db = DB()
+        avioes = db.get_all_avioes()
+       
+        db.close()
+        return [Aviao(aviao[0], aviao[1], aviao[2]) for aviao in avioes]
+    
+    
+    def remove(self, id_aviao):
+        db = DB()
+        db.remove_aviao(id_aviao)
+        db.close()
+        return True
     
 
    

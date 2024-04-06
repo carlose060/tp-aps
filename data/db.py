@@ -19,9 +19,9 @@ class DB:
     def close(self):
         self.conn.close()
     
-    def insert_aviao(self, capacidade_aviao, modelo_aviao):
+    def insert_aviao(self, aviao):
         self.execute(f'''
-            INSERT INTO aviao (capacidade, modelo) VALUES ({capacidade_aviao}, '{modelo_aviao}')
+            INSERT INTO aviao (capacidade, modelo) VALUES ({aviao.capacidade}, '{aviao.modelo}')
         ''')
         self.commit()
         return self.cursor.lastrowid
@@ -32,9 +32,22 @@ class DB:
         ''')
         self.commit()
     
+    def get_all_avioes(self):
+        self.execute('SELECT * FROM aviao')
+        return self.cursor.fetchall()
+    
+    def get_all_pessoas(self):
+        self.execute('SELECT * FROM passageiro')
+        passageiros = self.cursor.fetchall()
+        todos_passageiros = [list(p) + ['Passageiro'] for p in passageiros]
+        self.execute('SELECT * FROM piloto')
+        pilotos = self.cursor.fetchall()
+        todos_pilotos = [list(p) + ['Piloto'] for p in pilotos]
+        return todos_passageiros + todos_pilotos
+    
     def insert_passageiro(self, nome, idade):
         self.execute(f'''
-            INSERT INTO passageiro (nome, idade) VALUES ('{nome}', {idade})
+            INSERT INTO passageiro (nome, idade, id_reserva) VALUES ('{nome}', {idade}, NULL)
         ''')
         self.commit()
         return self.cursor.lastrowid
@@ -45,9 +58,9 @@ class DB:
         ''')
         self.commit()
     
-    def remove_passageiro(self, nome_pessoa):
+    def remove_passageiro(self, id):
         self.execute(f'''
-            DELETE FROM passageiro WHERE nome = '{nome_pessoa}'
+            DELETE FROM passageiro WHERE id = {id}
         ''')
         self.commit()
     
@@ -64,9 +77,9 @@ class DB:
         ''')
         self.commit()
     
-    def remove_piloto(self, nome_pessoa):
+    def remove_piloto(self, id):
         self.execute(f'''
-            DELETE FROM piloto WHERE nome = '{nome_pessoa}'
+            DELETE FROM piloto WHERE id = {id}
         ''')
         self.commit()
     
@@ -76,7 +89,7 @@ class DB:
             CREATE TABLE IF NOT EXISTS aviao (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 capacidade INTEGER NOT NULL,
-                modelo TEXT not NULL,
+                modelo TEXT not NULL
             )
         ''')
        
@@ -95,7 +108,7 @@ class DB:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
                 idade INTEGER NOT NULL,
-                numero_carteira TEXT NOT NULL,             
+                numero_carteira TEXT NOT NULL             
             )
         ''')
         

@@ -28,9 +28,6 @@ class Window(QMainWindow):
         super().__init__(parent)
     
         self.cw = None
-        self.avioes = AviaoController()
-        self.pessoas = PessoaController()
-
         self.telaInicial()
     
     
@@ -58,16 +55,17 @@ class Window(QMainWindow):
         if not capacidade or not modelo_aviao:
             QMessageBox.warning(self.cw, 'Erro', 'Algum campo não informado')
             return TelaCadastroAviao(self)
-        self.avioes.add(int(capacidade), modelo_aviao)
+        AviaoController().add(int(capacidade), modelo_aviao)
         self.telaInicial()
         QMessageBox.information(self.cw, 'Ação concluida', 'Avião Cadastrado com sucesso!')
     
     def concluirRemoverAviao(self):
-        id_aviao = self.avioesExistentes.currentText()
-        if not id_aviao:
+        aviao_excluir = self.avioesExistentes.currentText()
+        if not aviao_excluir:
             QMessageBox.warning(self.cw, 'Erro', 'Id do avião não informado')
             return TelaRemoverAviao(self)
-        self.avioes.remove(id_aviao)
+        id_aviao, _ = aviao_excluir.split(' | ')
+        AviaoController().remove(int(id_aviao))
         self.telaInicial()
         QMessageBox.information(self.cw, 'Ação concluida', 'Avião Removido com sucesso!')
     
@@ -75,19 +73,22 @@ class Window(QMainWindow):
         nome = self.nomePessoa.text()
         idade = self.idadePessoa.text()
         tipo = self.tipoPessoa.currentText()
+        numero_carteira = self.numeroCarteira.text()
         if not nome or not idade:
             QMessageBox.warning(self.cw, 'Erro', 'Nome ou idade não informados')
             return TelaCadastroPessoa(self)
-        self.pessoas.add(nome, int(idade), tipo)
+        PessoaController().add(nome, int(idade), tipo, numero_carteira)
         self.telaInicial()
         QMessageBox.information(self.cw, 'Ação concluida', 'Pessoa Cadastrada com sucesso!')
 
     def concluirRemoverPessoa(self):
-        nome_pessoa = self.pessoasExistentes.currentText()
-        if not nome_pessoa:
-            QMessageBox.warning(self.cw, 'Erro', 'Nome da pessoa não informado')
+        info_pessoa = self.pessoasExistentes.currentText()
+        if not info_pessoa:
+            QMessageBox.warning(self.cw, 'Erro', 'Pessoa não informada')
             return TelaRemoverPessoa(self)
-        self.pessoas.remove(nome_pessoa)
+        id_pessoa, nome_e_tipo_pessoa = info_pessoa.split(' | ')
+        _, tipo_pessoa = nome_e_tipo_pessoa.split(' - ')
+        PessoaController().remove(id_pessoa, tipo_pessoa)
         self.telaInicial()
         QMessageBox.information(self.cw, 'Ação concluida', 'Pessoa Removida com sucesso!')
  

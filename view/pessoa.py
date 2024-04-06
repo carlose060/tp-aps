@@ -1,6 +1,8 @@
 from PyQt6.QtGui import QIntValidator
 from PyQt6.QtWidgets import QComboBox, QLabel, QLineEdit, QPushButton
 
+from model.pessoa import Passageiro
+from controller.pessoa import PessoaController
 
 CSS_BUTTON = """
     font-size: 20px;
@@ -12,7 +14,7 @@ CSS_TITLE = 'font-size: 25px; font-weight: bold'
 
 class TelaCadastroPessoa:
     
-    def __init__(janela):
+    def __init__(self, janela):
         
         janela.setFixedSize(400,300)
         janela.limparTela()
@@ -41,7 +43,7 @@ class TelaCadastroPessoa:
 
 class TelaRemoverPessoa:
     
-    def __init__(janela):
+    def __init__(self, janela):
         
         janela.setFixedSize(400,300)
         janela.limparTela()
@@ -50,7 +52,9 @@ class TelaRemoverPessoa:
         
         janela.criarBtn(QLabel,'Nome:',3,0,3,6, CSS_BUTTON)
         janela.pessoasExistentes = QComboBox()
-        janela.pessoasExistentes.addItems(janela.pessoas.get_all())
+        todas_pessoas = PessoaController().get_all()
+        lista_pessoas_str = [f'{p.id} | {p.nome} - Passageiro' if isinstance(p, Passageiro) else f'{p.id} | {p.nome} - Piloto' for p in todas_pessoas]
+        janela.pessoasExistentes.addItems(lista_pessoas_str)
         janela.pessoasExistentes.setStyleSheet("""width: 10px;height: 40%;font-size: 16px;""")
         janela.grid.addWidget(janela.pessoasExistentes, 3, 7, 3, 10)
         
@@ -61,7 +65,7 @@ class TelaRemoverPessoa:
     
 class TelaVerPessoa:
     
-    def __init__(janela):
+    def __init__(self, janela):
         janela.setFixedSize(400,300)
         janela.limparTela()
         
@@ -73,7 +77,7 @@ class TelaVerPessoa:
         janela.criarBtn(QLabel,'Idade',row,11,3,6, CSS_BUTTON)
         janela.criarBtn(QLabel,'Tipo',row,17,3,6, CSS_BUTTON)
         row += 3
-        for pessoa in janela.pessoas.pessoas:
+        for pessoa in PessoaController().get_all():
             try: 
                 _ =  pessoa.numero_carteira
                 tipo = 'Piloto'

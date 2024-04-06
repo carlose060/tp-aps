@@ -1,6 +1,7 @@
 from PyQt6.QtGui import QIntValidator
 from PyQt6.QtWidgets import QComboBox, QLabel, QLineEdit, QPushButton
 
+from controller.aviao import AviaoController
 
 CSS_BUTTON = """
     font-size: 20px;
@@ -12,7 +13,7 @@ CSS_TITLE = 'font-size: 25px; font-weight: bold'
 
 class TelaCadastroAviao:
     
-    def __init__(janela):
+    def __init__(self, janela):
         
         janela.setFixedSize(400,300)
         janela.limparTela()
@@ -32,7 +33,8 @@ class TelaCadastroAviao:
 
 class TelaRemoverAviao:
     
-    def __init__(janela):
+   
+    def __init__(self, janela):
         
         janela.setFixedSize(400,300)
         janela.limparTela()
@@ -41,7 +43,8 @@ class TelaRemoverAviao:
         
         janela.criarBtn(QLabel,'Id do avião:',3,0,3,6, CSS_BUTTON)
         janela.avioesExistentes = QComboBox()
-        janela.avioesExistentes.addItems(janela.avioes.get_all())
+        todos_avioes = AviaoController().get_all()
+        janela.avioesExistentes.addItems([f'{av.id} | {av.capacidade} - {av.modelo}' for av in todos_avioes])
         janela.avioesExistentes.setStyleSheet("""width: 10px;height: 40%;font-size: 16px;""")
         janela.grid.addWidget(janela.avioesExistentes, 3, 7, 3, 10)
         
@@ -51,21 +54,21 @@ class TelaRemoverAviao:
         
 class TelaVerAviao:
     
-    def __init__(janela):
+    def __init__(self, janela):
         janela.setFixedSize(400,300)
         janela.limparTela()
         
         janela.criarBtn(QLabel,'VER AVIÕES',0,3,3,12, CSS_TITLE)
         
         row = 3
-        janela.criarBtn(QLabel,'Id',row,0,3,5, CSS_BUTTON)
-        janela.criarBtn(QLabel,'Capacidade',row,5,3,5, CSS_BUTTON)
-        janela.criarBtn(QLabel,'Modelo',row,10,3,5, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Id',row,0,3,3, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Capacidade',row,3,3,7, CSS_BUTTON)
+        janela.criarBtn(QLabel,'Modelo',row,10,3,7, CSS_BUTTON)
         row += 3
-        for aviao in janela.avioes.avioes:
-            janela.criarBtn(QLabel,str(aviao.id),row,0,3,5, CSS_BUTTON)
-            janela.criarBtn(QLabel,str(aviao.capacidade),row,5,3,5, CSS_BUTTON)
-            janela.criarBtn(QLabel,str(aviao.modelo),row,10,3,5, CSS_BUTTON)
+        for aviao in AviaoController().get_all():
+            janela.criarBtn(QLabel,str(aviao.id),row,0,3,3, CSS_BUTTON)
+            janela.criarBtn(QLabel,str(aviao.capacidade),row,3,3,7, CSS_BUTTON)
+            janela.criarBtn(QLabel,str(aviao.modelo),row,10,3,7, CSS_BUTTON)
             row += 3
         janela.criarBtn(QPushButton,'Voltar',row,0,3,6,CSS_BUTTON, janela.telaInicial)
         
