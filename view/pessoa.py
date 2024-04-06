@@ -39,7 +39,7 @@ class TelaCadastroPessoa:
         
     
         janela.criarBtn(QPushButton,'Cadastrar',15,0,3,6,CSS_BUTTON, janela.concluirCadastroPessoa)
-        janela.criarBtn(QPushButton,'Voltar',15,6,3,6,CSS_BUTTON, janela.telaInicial)
+        janela.criarBtn(QPushButton,'Voltar',15,6,3,6,CSS_BUTTON, janela.menuPrincipal)
 
 class TelaRemoverPessoa:
     
@@ -60,7 +60,7 @@ class TelaRemoverPessoa:
         
         
         janela.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, janela.concluirRemoverPessoa)
-        janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.telaInicial)
+        janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.menuPrincipal)
         
     
 class TelaVerPessoa:
@@ -89,6 +89,6 @@ class TelaVerPessoa:
             janela.criarBtn(QLabel,str(pessoa.idade),row,11,3,6, CSS_BUTTON)
             janela.criarBtn(QLabel,tipo,row,17,3,6, CSS_BUTTON)
             row += 3
-        janela.criarBtn(QPushButton,'Voltar',row,0,3,6,CSS_BUTTON, janela.telaInicial)
+        janela.criarBtn(QPushButton,'Voltar',row,0,3,6,CSS_BUTTON, janela.menuPrincipal)
 
     

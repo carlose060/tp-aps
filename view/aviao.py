@@ -29,7 +29,7 @@ class TelaCadastroAviao:
         
         
         janela.criarBtn(QPushButton,'Cadastrar',9,0,3,6,CSS_BUTTON, janela.concluirCadastroAviao)
-        janela.criarBtn(QPushButton,'Voltar',9,6,3,6,CSS_BUTTON, janela.telaInicial)
+        janela.criarBtn(QPushButton,'Voltar',9,6,3,6,CSS_BUTTON, janela.menuPrincipal)
 
 class TelaRemoverAviao:
     
@@ -50,7 +50,7 @@ class TelaRemoverAviao:
         
         
         janela.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, janela.concluirRemoverAviao)
-        janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.telaInicial)
+        janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.menuPrincipal)
         
 class TelaVerAviao:
     
@@ -70,7 +70,7 @@ class TelaVerAviao:
             janela.criarBtn(QLabel,str(aviao.capacidade),row,3,3,7, CSS_BUTTON)
             janela.criarBtn(QLabel,str(aviao.modelo),row,10,3,7, CSS_BUTTON)
             row += 3
-        janela.criarBtn(QPushButton,'Voltar',row,0,3,6,CSS_BUTTON, janela.telaInicial)
+        janela.criarBtn(QPushButton,'Voltar',row,0,3,6,CSS_BUTTON, janela.menuPrincipal)
         
 
     

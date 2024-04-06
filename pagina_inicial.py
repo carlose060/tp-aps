@@ -26,10 +26,10 @@ class Window(QMainWindow):
         super().__init__(parent)
     
         self.cw = None
-        self.telaInicial()
+        self.menuPrincipal()
     
     
-    def telaInicial(self):
+    def menuPrincipal(self):
         self.setWindowTitle('Trabalho pratico | Analise e projeto de software 2024.1')
         self.setFixedSize(800,500)
         self.limparTela()
@@ -54,7 +54,7 @@ class Window(QMainWindow):
             QMessageBox.warning(self.cw, 'Erro', 'Algum campo não informado')
             return TelaCadastroAviao(self)
         AviaoController().add(int(capacidade), modelo_aviao)
-        self.telaInicial()
+        self.menuPrincipal()
         QMessageBox.information(self.cw, 'Ação concluida', 'Avião Cadastrado com sucesso!')
     
     def concluirRemoverAviao(self):
@@ -64,7 +64,7 @@ class Window(QMainWindow):
             return TelaRemoverAviao(self)
         id_aviao, _ = aviao_excluir.split(' | ')
         AviaoController().remove(int(id_aviao))
-        self.telaInicial()
+        self.menuPrincipal()
         QMessageBox.information(self.cw, 'Ação concluida', 'Avião Removido com sucesso!')
     
     def concluirCadastroPessoa(self):
@@ -76,7 +76,7 @@ class Window(QMainWindow):
             QMessageBox.warning(self.cw, 'Erro', 'Nome ou idade não informados')
             return TelaCadastroPessoa(self)
         PessoaController().add(nome, int(idade), tipo, numero_carteira)
-        self.telaInicial()
+        self.menuPrincipal()
         QMessageBox.information(self.cw, 'Ação concluida', 'Pessoa Cadastrada com sucesso!')
 
     def concluirRemoverPessoa(self):
@@ -87,7 +87,7 @@ class Window(QMainWindow):
         id_pessoa, nome_e_tipo_pessoa = info_pessoa.split(' | ')
         _, tipo_pessoa = nome_e_tipo_pessoa.split(' - ')
         PessoaController().remove(id_pessoa, tipo_pessoa)
-        self.telaInicial()
+        self.menuPrincipal()
         QMessageBox.information(self.cw, 'Ação concluida', 'Pessoa Removida com sucesso!')
  
 
