@@ -6,7 +6,7 @@ SRC_PATH = Path(__file__).resolve().parent.parent
 path.append(str(SRC_PATH))
 # ---------------------------------------------------------------#
 
-from data.db import DB
+from data.pessoa import PessoaDB
 from model.pessoa import Passageiro, Piloto
 
 
@@ -14,7 +14,7 @@ class PessoaController:
 
 
     def add(self, nome, idade, tipo, numero_carteira):
-        db = DB()
+        db = PessoaDB()
         if tipo == 'Passageiro':
             pessoa = Passageiro(0, nome, idade)
             id_pessoa = db.insert_passageiro(nome, idade)
@@ -27,14 +27,14 @@ class PessoaController:
 
 
     def get_all(self):
-        db = DB()
+        db = PessoaDB()
         todas_pessoas = db.get_all_pessoas()
         return [Passageiro(p[0], p[1], p[2]) if p[-1] == 'Passageiro' else Piloto(p[0], p[1], p[2], p[3]) for p in todas_pessoas]
 
     
     def remove(self, id, tipo):
         
-        db = DB()
+        db = PessoaDB()
         if tipo == 'Passageiro':
             db.remove_passageiro(id)
         else:

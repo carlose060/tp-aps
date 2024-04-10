@@ -19,64 +19,8 @@ class DB:
     def close(self):
         self.conn.close()
     
-    def insert_aviao(self, aviao):
-        self.execute(f'''
-            INSERT INTO aviao (capacidade, modelo) VALUES ({aviao.capacidade}, '{aviao.modelo}')
-        ''')
-        self.commit()
-        return self.cursor.lastrowid
+   
     
-    def remove_aviao(self, id_aviao):
-        self.execute(f'''
-            DELETE FROM aviao WHERE id = {id_aviao}
-        ''')
-        self.commit()
-    
-    def get_all_avioes(self):
-        self.execute('SELECT * FROM aviao')
-        return self.cursor.fetchall()
-    
-    def get_all_pessoas(self):
-        self.execute('SELECT * FROM passageiro')
-        passageiros = self.cursor.fetchall()
-        todos_passageiros = [list(p) + ['Passageiro'] for p in passageiros]
-        self.execute('SELECT * FROM piloto')
-        pilotos = self.cursor.fetchall()
-        todos_pilotos = [list(p) + ['Piloto'] for p in pilotos]
-        return todos_passageiros + todos_pilotos
-    
-    def insert_passageiro(self, nome, idade):
-        self.execute(f'''
-            INSERT INTO passageiro (nome, idade) VALUES ('{nome}', {idade})
-        ''')
-        self.commit()
-        return self.cursor.lastrowid
-    
-    
-    def remove_passageiro(self, id):
-        self.execute(f'''
-            DELETE FROM passageiro WHERE id = {id}
-        ''')
-        self.commit()
-    
-    def insert_piloto(self, nome, idade, numero_carteira):
-        self.execute(f'''
-            INSERT INTO piloto (nome, idade, numero_carteira) VALUES ('{nome}', {idade}, '{numero_carteira}')
-        ''')
-        self.commit()
-        return self.cursor.lastrowid
-    
-    def update_piloto(self, id_piloto, id_voo):
-        self.execute(f'''
-            UPDATE piloto SET id_voo = {id_voo} WHERE id = {id_piloto}
-        ''')
-        self.commit()
-    
-    def remove_piloto(self, id):
-        self.execute(f'''
-            DELETE FROM piloto WHERE id = {id}
-        ''')
-        self.commit()
     
         
     def create_tables(self):
@@ -113,4 +57,3 @@ class DB:
 if __name__ == '__main__':
     db = DB()
     db.create_tables()
-    #db.load_data()

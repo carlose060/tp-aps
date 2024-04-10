@@ -6,7 +6,7 @@ SRC_PATH = Path(__file__).resolve().parent.parent
 path.append(str(SRC_PATH))
 # ---------------------------------------------------------------#
 
-from data.db import DB
+from data.aviao import AviaoDB
 from model.aviao import Aviao
 
 
@@ -16,7 +16,7 @@ class AviaoController:
 
     def add(self, capacidade, modelo):
         aviao = Aviao(0, capacidade, modelo)
-        db = DB()
+        db = AviaoDB()
         id_aviao = db.insert_aviao(aviao)
         db.close()
         aviao.id = id_aviao
@@ -24,7 +24,7 @@ class AviaoController:
 
 
     def get_all(self):
-        db = DB()
+        db = AviaoDB()
         avioes = db.get_all_avioes()
        
         db.close()
@@ -32,7 +32,7 @@ class AviaoController:
     
     
     def remove(self, id_aviao):
-        db = DB()
+        db = AviaoDB()
         db.remove_aviao(id_aviao)
         db.close()
         return True

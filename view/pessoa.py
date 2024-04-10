@@ -13,7 +13,7 @@ CSS_TITLE = 'font-size: 25px; font-weight: bold'
 
 
 class TelaCadastroPessoa:
-    
+
     def __init__(self, janela):
         
         janela.setFixedSize(400,300)
