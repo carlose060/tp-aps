@@ -8,21 +8,15 @@ class Pessoa:
 
     
 class Passageiro(Pessoa):
-    def __init__(self, id, nome, idade, reserva = None):
+    def __init__(self, id, nome, idade):
         super().__init__(id ,nome, idade)
-        self.reserva = reserva
         
 
-    def __str__(self):
-        return f'Nome: {self.nome}, Reserva: {self.reserva}'
-    
-
 class Piloto(Pessoa):
-    def __init__(self, id, nome, idade, voo = None):        
+    def __init__(self, id, nome, idade, numero_carteira):        
         super().__init__(id, nome, idade)
-        self.voo = voo      
+        self.numero_carteira = numero_carteira      
 
-    def __str__(self):
-        return f'Nome: {self.nome}, Avião: {self.voo}'
+
     
   

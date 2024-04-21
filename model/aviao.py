@@ -1,11 +1,10 @@
 
 
 class Aviao:
-    def __init__(self, id, capacidade, assentos):
+    def __init__(self, id, capacidade, modelo):
         self.id = id
         self.capacidade = capacidade
-        self.assentos = assentos
+        self.modelo = modelo
 
-    def __str__(self):
-        return f'Avião: {self.id} - Capacidade: {self.capacidade}'
+
     

@@ -6,80 +6,40 @@ SRC_PATH = Path(__file__).resolve().parent.parent
 path.append(str(SRC_PATH))
 # ---------------------------------------------------------------#
 
-from data.db import DB
+from data.pessoa import PessoaDB
 from model.pessoa import Passageiro, Piloto
 
 
 class PessoaController:
-    def __init__(self):
-        self.pessoas = []
 
-    def add(self, nome, idade, tipo):
-        db = DB()
+
+    def add(self, nome, idade, tipo, numero_carteira):
+        db = PessoaDB()
         if tipo == 'Passageiro':
-            id_passageiro = db.insert_passageiro(nome, idade)
-            pessoa = Passageiro(id_passageiro, nome, idade)
+            pessoa = Passageiro(0, nome, idade)
+            id_pessoa = db.insert_passageiro(nome, idade)
         else:
-            id_piloto = db.insert_piloto(nome, idade)
-            pessoa = Piloto(id_piloto, nome, idade)
-        self.pessoas.append(pessoa)
+            pessoa = Piloto(0, nome, idade, numero_carteira)
+            id_pessoa = db.insert_piloto(nome, idade, numero_carteira)
+        pessoa.id = id_pessoa
         db.close()
-        return pessoa
-    
-    def load_piloto(self, id_piloto, nome, idade):
-        pessoa = Piloto(id_piloto, nome, idade)
-        self.pessoas.append(pessoa)
-        return pessoa
+        return True
 
-    def load_passageiro(self, id_passageiro, nome, idade, reserva):
-        pessoa = Passageiro(id_passageiro, nome, idade, reserva)
-        self.pessoas.append(pessoa)
-        return pessoa
+
+    def get_all(self):
+        db = PessoaDB()
+        todas_pessoas = db.get_all_pessoas()
+        return [Passageiro(p[0], p[1], p[2]) if p[-1] == 'Passageiro' else Piloto(p[0], p[1], p[2], p[3]) for p in todas_pessoas]
+
+    
+    def remove(self, id, tipo):
         
-    def get(self, id_pessoa):
-        for pessoa in self.pessoas:
-            if pessoa.id == int(id_pessoa):
-                return pessoa
-            
-    def get_with_voo(self, id_voo):
-        for pessoa in self.pessoas:
-            if type(pessoa) == Piloto:
-                if pessoa.voo.id == int(id_voo):
-                    return pessoa
-        return None
-    
-    def get_all(self, tipo=None):
+        db = PessoaDB()
         if tipo == 'Passageiro':
-            return [str(p.id)+f' | {p.nome}' for p in self.pessoas if type(p) == Passageiro and p.reserva is None]
-        elif tipo == 'Piloto':
-            return [str(p.id)+f' | {p.nome}' for p in self.pessoas if type(p) == Piloto and p.voo is None]
-        return [str(p.nome) for p in self.pessoas]
-    
-    def remove(self, nome):
-        for pessoa in self.pessoas:
-            if pessoa.nome == nome:
-                db = DB()
-                if type(pessoa) == Passageiro:
-                    db.remove_passageiro(nome)
-                else:
-                    db.remove_piloto(nome)
-                self.pessoas.remove(pessoa)
-                db.close()
-                return True
-        return False
+            db.remove_passageiro(id)
+        else:
+            db.remove_piloto(id)
+        db.close()
+        return True
+        
 
-    def update(self, id_pessoa, reserva=None, voo=None):
-        for pessoa in self.pessoas:
-            if pessoa.id == int(id_pessoa):
-                db = DB()
-                if type(pessoa) == Passageiro:
-                    pessoa.reserva = reserva
-                    db.update_passageiro(id_pessoa, reserva.id)
-                    db.close()
-                    return True
-                elif type(pessoa) == Piloto:
-                    pessoa.voo = voo
-                    db.update_piloto(id_pessoa, voo.id)
-                    db.close()
-                    return True    
-        return False

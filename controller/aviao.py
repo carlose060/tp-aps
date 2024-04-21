@@ -6,49 +6,36 @@ SRC_PATH = Path(__file__).resolve().parent.parent
 path.append(str(SRC_PATH))
 # ---------------------------------------------------------------#
 
-from data.db import DB
+from data.aviao import AviaoDB
 from model.aviao import Aviao
-from controller.assento import AssentoController
+
 
 
 class AviaoController:
-    def __init__(self):
-        self.avioes = []
-        self.assentos_controller = AssentoController()
 
-    def add(self, capacidade):
-        db = DB()
-        id_aviao = db.insert_aviao(capacidade)
+
+    def add(self, capacidade, modelo):
+        aviao = Aviao(0, capacidade, modelo)
+        db = AviaoDB()
+        id_aviao = db.insert_aviao(aviao)
         db.close()
-        
-        self.assentos_controller.add(capacidade, id_aviao)
-        
-        aviao = Aviao(id_aviao, capacidade, self.assentos_controller.assentos)
-        self.avioes.append(aviao)
-        return aviao
-    
-    def load(self, id, capacidade, list_assentos):
-        self.assentos_controller.load(list_assentos)
-        aviao = Aviao(id, capacidade, self.assentos_controller.assentos)
-        self.avioes.append(aviao)
+        aviao.id = id_aviao
+        return True
 
-    def get(self, id_aviao):
-        for aviao in self.avioes:
-            if str(aviao.id) == str(id_aviao):
-                return aviao
-        return None
 
     def get_all(self):
-        return [str(av.id) for av in self.avioes]
+        db = AviaoDB()
+        avioes = db.get_all_avioes()
+       
+        db.close()
+        return [Aviao(aviao[0], aviao[1], aviao[2]) for aviao in avioes]
+    
     
     def remove(self, id_aviao):
-        for aviao in self.avioes:
-            if str(aviao.id) == id_aviao:
-                self.avioes.remove(aviao)
-                db = DB()
-                db.remove_aviao(id_aviao)
-                db.close()
-                return True
-        return False
+        db = AviaoDB()
+        db.remove_aviao(id_aviao)
+        db.close()
+        return True
+    
 
    
