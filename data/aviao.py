@@ -1,4 +1,4 @@
-from db import DB
+from .db import DB
 
 
 class AviaoDB(DB):
@@ -17,6 +17,12 @@ class AviaoDB(DB):
             DELETE FROM aviao WHERE id = {id_aviao}
         ''')
         self.commit()
+        
+    def get_aviao_with_id(self, id_aviao):
+        self.execute(f'''
+            SELECT * FROM aviao WHERE id = {id_aviao}
+        ''')
+        return self.cursor.fetchone()
     
     def get_all_avioes(self):
         self.execute('SELECT * FROM aviao')

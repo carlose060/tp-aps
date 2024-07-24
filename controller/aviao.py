@@ -1,11 +1,3 @@
-# ---------------------------------------------------------------#
-# IMPORTS PARA SER VISIVEIS BIBLIOTECAS EXTERNAS DA PASTAR RAIZ
-from sys import path
-from pathlib import Path
-SRC_PATH = Path(__file__).resolve().parent.parent
-path.append(str(SRC_PATH))
-# ---------------------------------------------------------------#
-
 from data.aviao import AviaoDB
 from model.aviao import Aviao
 
@@ -30,6 +22,11 @@ class AviaoController:
         db.close()
         return [Aviao(aviao[0], aviao[1], aviao[2]) for aviao in avioes]
     
+    def get_with_id(self, id_aviao):
+        db = AviaoDB()
+        aviao = db.get_aviao_with_id(id_aviao)
+        db.close()
+        return Aviao(aviao[0], aviao[1], aviao[2])
     
     def remove(self, id_aviao):
         db = AviaoDB()

@@ -1,5 +1,5 @@
 from PyQt6.QtGui import QIntValidator
-from PyQt6.QtWidgets import QComboBox, QLabel, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QComboBox, QLabel, QLineEdit, QPushButton, QMessageBox
 
 from controller.aviao import AviaoController
 
@@ -28,8 +28,21 @@ class TelaCadastroAviao:
         janela.capacidadeAviao.setValidator(QIntValidator())
         
         
-        janela.criarBtn(QPushButton,'Cadastrar',9,0,3,6,CSS_BUTTON, janela.concluirCadastroAviao)
+        janela.criarBtn(QPushButton,'Cadastrar',9,0,3,6,CSS_BUTTON, lambda: self.concluirCadastroAviao(janela))
         janela.criarBtn(QPushButton,'Voltar',9,6,3,6,CSS_BUTTON, janela.menuPrincipal)
+        
+         
+    def concluirCadastroAviao(self, janela):
+        capacidade = janela.capacidadeAviao.text()
+        modelo_aviao = janela.modeloAviao.text()
+        if not capacidade or not modelo_aviao:
+            QMessageBox.warning(janela.cw, 'Erro', 'Algum campo não informado')
+            return TelaCadastroAviao(janela)
+        AviaoController().add(int(capacidade), modelo_aviao)
+        janela.menuPrincipal()
+        QMessageBox.information(janela.cw, 'Ação concluida', 'Avião Cadastrado com sucesso!')
+    
+  
 
 class TelaRemoverAviao:
     
@@ -49,8 +62,18 @@ class TelaRemoverAviao:
         janela.grid.addWidget(janela.avioesExistentes, 3, 7, 3, 10)
         
         
-        janela.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, janela.concluirRemoverAviao)
+        janela.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, lambda : self.concluirRemoverAviao(janela))
         janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.menuPrincipal)
+    
+    def concluirRemoverAviao(self, janela):
+        aviao_excluir = janela.avioesExistentes.currentText()
+        if not aviao_excluir:
+            QMessageBox.warning(janela.cw, 'Erro', 'Id do avião não informado')
+            return TelaRemoverAviao(janela)
+        id_aviao, _ = aviao_excluir.split(' | ')
+        AviaoController().remove(int(id_aviao))
+        janela.menuPrincipal()
+        QMessageBox.information(janela.cw, 'Ação concluida', 'Avião Removido com sucesso!')
         
 class TelaVerAviao:
     

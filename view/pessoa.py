@@ -1,5 +1,5 @@
 from PyQt6.QtGui import QIntValidator
-from PyQt6.QtWidgets import QComboBox, QLabel, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QComboBox, QLabel, QLineEdit, QPushButton, QMessageBox
 
 from model.pessoa import Passageiro
 from controller.pessoa import PessoaController
@@ -38,9 +38,22 @@ class TelaCadastroPessoa:
         janela.grid.addWidget(janela.tipoPessoa, 12,7,3,10)      
         
     
-        janela.criarBtn(QPushButton,'Cadastrar',15,0,3,6,CSS_BUTTON, janela.concluirCadastroPessoa)
+        janela.criarBtn(QPushButton,'Cadastrar',15,0,3,6,CSS_BUTTON, lambda : self.concluirCadastroPessoa(janela))
         janela.criarBtn(QPushButton,'Voltar',15,6,3,6,CSS_BUTTON, janela.menuPrincipal)
+        
+    def concluirCadastroPessoa(self, janela):
+        nome = janela.nomePessoa.text()
+        idade = janela.idadePessoa.text()
+        tipo = janela.tipoPessoa.currentText()
+        numero_carteira = janela.numeroCarteira.text()
+        if not nome or not idade:
+            QMessageBox.warning(janela.cw, 'Erro', 'Nome ou idade não informados')
+            return TelaCadastroPessoa(janela)
+        PessoaController().add(nome, int(idade), tipo, numero_carteira)
+        janela.menuPrincipal()
+        QMessageBox.information(janela.cw, 'Ação concluida', 'Pessoa Cadastrada com sucesso!')
 
+   
 class TelaRemoverPessoa:
     
     def __init__(self, janela):
@@ -59,8 +72,21 @@ class TelaRemoverPessoa:
         janela.grid.addWidget(janela.pessoasExistentes, 3, 7, 3, 10)
         
         
-        janela.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, janela.concluirRemoverPessoa)
+        janela.criarBtn(QPushButton,'Remover',7,0,3,6,CSS_BUTTON, lambda : self.concluirRemoverPessoa(janela))
         janela.criarBtn(QPushButton,'Voltar',7,6,3,6,CSS_BUTTON, janela.menuPrincipal)
+        
+    def concluirRemoverPessoa(self, janela):
+        info_pessoa = janela.pessoasExistentes.currentText()
+        if not info_pessoa:
+            QMessageBox.warning(janela.cw, 'Erro', 'Pessoa não informada')
+            return TelaRemoverPessoa(janela)
+        id_pessoa, nome_e_tipo_pessoa = info_pessoa.split(' | ')
+        _, tipo_pessoa = nome_e_tipo_pessoa.split(' - ')
+        PessoaController().remove(id_pessoa, tipo_pessoa)
+        janela.menuPrincipal()
+        QMessageBox.information(janela.cw, 'Ação concluida', 'Pessoa Removida com sucesso!')
+ 
+
         
     
 class TelaVerPessoa:

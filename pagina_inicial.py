@@ -1,10 +1,8 @@
-from PyQt6.QtWidgets import QGridLayout, QLabel, QMainWindow, QMessageBox, QPushButton, QWidget
+from PyQt6.QtWidgets import QGridLayout, QLabel, QMainWindow, QPushButton, QWidget
 
+from view.voo import TelaCadastroVoo, TelaRemoverVoo, TelaVerVoo
 from view.aviao import TelaCadastroAviao, TelaRemoverAviao, TelaVerAviao
-from controller.aviao import AviaoController
-
 from view.pessoa import TelaCadastroPessoa, TelaRemoverPessoa, TelaVerPessoa
-from controller.pessoa import PessoaController
 
 CSS_BUTTON = """
     font-size: 20px;
@@ -44,53 +42,10 @@ class Window(QMainWindow):
         self.criarBtn(QPushButton,'Cadastrar pessoa',6,0,3,7,CSS_BUTTON, lambda: TelaCadastroPessoa(self))
         self.criarBtn(QPushButton,'Remover pessoa',6,7,3,7,CSS_BUTTON, lambda: TelaRemoverPessoa(self))
         self.criarBtn(QPushButton,'Visualizar pessoas',6,14,3,7,CSS_BUTTON, lambda: TelaVerPessoa(self))
-        
-          
-        
-    def concluirCadastroAviao(self):
-        capacidade = self.capacidadeAviao.text()
-        modelo_aviao = self.modeloAviao.text()
-        if not capacidade or not modelo_aviao:
-            QMessageBox.warning(self.cw, 'Erro', 'Algum campo não informado')
-            return TelaCadastroAviao(self)
-        AviaoController().add(int(capacidade), modelo_aviao)
-        self.menuPrincipal()
-        QMessageBox.information(self.cw, 'Ação concluida', 'Avião Cadastrado com sucesso!')
-    
-    def concluirRemoverAviao(self):
-        aviao_excluir = self.avioesExistentes.currentText()
-        if not aviao_excluir:
-            QMessageBox.warning(self.cw, 'Erro', 'Id do avião não informado')
-            return TelaRemoverAviao(self)
-        id_aviao, _ = aviao_excluir.split(' | ')
-        AviaoController().remove(int(id_aviao))
-        self.menuPrincipal()
-        QMessageBox.information(self.cw, 'Ação concluida', 'Avião Removido com sucesso!')
-    
-    def concluirCadastroPessoa(self):
-        nome = self.nomePessoa.text()
-        idade = self.idadePessoa.text()
-        tipo = self.tipoPessoa.currentText()
-        numero_carteira = self.numeroCarteira.text()
-        if not nome or not idade:
-            QMessageBox.warning(self.cw, 'Erro', 'Nome ou idade não informados')
-            return TelaCadastroPessoa(self)
-        PessoaController().add(nome, int(idade), tipo, numero_carteira)
-        self.menuPrincipal()
-        QMessageBox.information(self.cw, 'Ação concluida', 'Pessoa Cadastrada com sucesso!')
-
-    def concluirRemoverPessoa(self):
-        info_pessoa = self.pessoasExistentes.currentText()
-        if not info_pessoa:
-            QMessageBox.warning(self.cw, 'Erro', 'Pessoa não informada')
-            return TelaRemoverPessoa(self)
-        id_pessoa, nome_e_tipo_pessoa = info_pessoa.split(' | ')
-        _, tipo_pessoa = nome_e_tipo_pessoa.split(' - ')
-        PessoaController().remove(id_pessoa, tipo_pessoa)
-        self.menuPrincipal()
-        QMessageBox.information(self.cw, 'Ação concluida', 'Pessoa Removida com sucesso!')
- 
-
+         
+        self.criarBtn(QPushButton,'Cadastrar voo',9,0,3,7,CSS_BUTTON, lambda: TelaCadastroVoo(self))
+        self.criarBtn(QPushButton,'Remover voo',9,7,3,7,CSS_BUTTON, lambda: TelaRemoverVoo(self))
+        self.criarBtn(QPushButton,'Visualizar voos',9,14,3,7,CSS_BUTTON, lambda: TelaVerVoo(self))
     def criarBtn(self,obj, title, row, col, rowspan, colspan, css=None, eventClick=None):
         btn = obj()
         btn.setText(title)

@@ -1,4 +1,4 @@
-from db import DB
+from .db import DB
 
 
 class PessoaDB(DB):
@@ -20,6 +20,18 @@ class PessoaDB(DB):
         ''')
         self.commit()
     
+    def get_passageiro_with_id(self, id):
+        self.execute(f'''
+            SELECT * FROM passageiro WHERE id = {id}
+        ''')
+        return self.cursor.fetchone()
+        
+    def get_piloto_with_id(self, id):
+        self.execute(f'''
+            SELECT * FROM piloto WHERE id = {id}
+        ''')
+        return self.cursor.fetchone()
+    
     def insert_piloto(self, nome, idade, numero_carteira):
         self.execute(f'''
             INSERT INTO piloto (nome, idade, numero_carteira) VALUES ('{nome}', {idade}, '{numero_carteira}')
@@ -33,6 +45,10 @@ class PessoaDB(DB):
             DELETE FROM piloto WHERE id = {id}
         ''')
         self.commit()
+    
+    def get_all_pilotos(self):
+        self.execute('SELECT * FROM piloto')
+        return self.cursor.fetchall()
     
     def get_all_pessoas(self):
         self.execute('SELECT * FROM passageiro')
