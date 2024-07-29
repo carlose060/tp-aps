@@ -34,3 +34,11 @@ class VooController:
         db.remove_voo(int(voo))
         db.close()
         return True
+    
+    def get(self, id_voo):
+        db = VooDB()
+        voo = db.get_voo(int(id_voo))
+        db.close()
+        aviao = AviaoController().get_with_id(int(voo[4]))
+        piloto = PessoaController().get_piloto_with_id(int(voo[5]))
+        return Voo(voo[0], voo[1], voo[2], voo[3], aviao, piloto)

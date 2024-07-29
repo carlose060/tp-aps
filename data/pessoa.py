@@ -50,6 +50,10 @@ class PessoaDB(DB):
         self.execute('SELECT * FROM piloto')
         return self.cursor.fetchall()
     
+    def get_all_passageiros(self):
+        self.execute('SELECT * FROM passageiro')
+        return self.cursor.fetchall()
+    
     def get_all_pessoas(self):
         self.execute('SELECT * FROM passageiro')
         passageiros = self.cursor.fetchall()
@@ -58,3 +62,10 @@ class PessoaDB(DB):
         pilotos = self.cursor.fetchall()
         todos_pilotos = [list(p) + ['Piloto'] for p in pilotos]
         return todos_passageiros + todos_pilotos
+    
+    def update_reserva_passageiro(self, id_passageiro, id_reserva):
+        self.execute(f'''
+            UPDATE passageiro SET reserva_id = {id_reserva} WHERE id = {id_passageiro}
+        ''')
+        self.commit()
+        

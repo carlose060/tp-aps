@@ -21,3 +21,7 @@ class VooDB(DB):
     def get_all_voos(self):
         self.execute('SELECT * FROM voo')
         return self.cursor.fetchall()
+    
+    def get_voo(self, id_voo):
+        self.execute(f'SELECT * FROM voo WHERE id = {id_voo}')
+        return self.cursor.fetchone()

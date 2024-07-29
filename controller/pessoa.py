@@ -23,11 +23,23 @@ class PessoaController:
         db.close()
         return [Piloto(p[0], p[1], p[2], p[3]) for p in todos_pilotos]
     
+    def get_all_passageiros(self):
+        db = PessoaDB()
+        todos_passageiros = db.get_all_passageiros()
+        db.close()
+        return [Passageiro(p[0], p[1], p[2]) for p in todos_passageiros]
+    
     def get_all(self):
         db = PessoaDB()
         todas_pessoas = db.get_all_pessoas()
         return [Passageiro(p[0], p[1], p[2]) if p[-1] == 'Passageiro' else Piloto(p[0], p[1], p[2], p[3]) for p in todas_pessoas]
 
+    def get_passageiro_with_id(self, id):
+        db = PessoaDB()
+        passageiro = db.get_passageiro_with_id(id)
+        db.close()
+        return Passageiro(passageiro[0], passageiro[1], passageiro[2], passageiro[3])
+    
     def get_piloto_with_id(self, id):
         db = PessoaDB()
         piloto = db.get_piloto_with_id(id)
@@ -41,6 +53,12 @@ class PessoaController:
             db.remove_passageiro(id)
         else:
             db.remove_piloto(id)
+        db.close()
+        return True
+    
+    def update_reserva_passageiro(self, id_passageiro, reserva):
+        db = PessoaDB()
+        db.update_reserva_passageiro(int(id_passageiro), reserva.id)
         db.close()
         return True
         

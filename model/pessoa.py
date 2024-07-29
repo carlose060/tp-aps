@@ -10,6 +10,7 @@ class Pessoa:
 class Passageiro(Pessoa):
     def __init__(self, id, nome, idade):
         super().__init__(id ,nome, idade)
+        self.reserva = None
         
 
 class Piloto(Pessoa):

@@ -37,7 +37,8 @@ class DB:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
                 idade INTEGER NOT NULL,
-                numero_carteira TEXT NOT NULL
+                reserva_id INTEGER DEFAULT(NULL),
+                FOREIGN KEY (reserva_id) REFERENCES reserva(id) ON DELETE SET NULL
             )
         ''')
         
@@ -57,11 +58,19 @@ class DB:
                 data TEXT NOT NULL,
                 aviao_id INTEGER NOT NULL,
                 piloto_id INTEGER NOT NULL,
-                FOREIGN KEY (aviao_id) REFERENCES aviao(id) ON DELETE SET NULL,
-                FOREIGN KEY (piloto_id) REFERENCES piloto(id) ON DELETE SET NULL
+                FOREIGN KEY (aviao_id) REFERENCES aviao(id) ON DELETE CASCADE,
+                FOREIGN KEY (piloto_id) REFERENCES piloto(id) ON DELETE CASCADE
             )
         ''')
-        
+        self.execute('''
+            CREATE TABLE IF NOT EXISTS reserva (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                preco TEXT NOT NULL,
+                voo_id INTEGER NOT NULL,
+                assento INTEGER NOT NULL,
+                FOREIGN KEY (voo_id) REFERENCES voo(id) ON DELETE SET NULL
+            )
+        ''')
         self.commit()
         self.close()
 
