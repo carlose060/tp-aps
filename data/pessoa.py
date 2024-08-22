@@ -1,7 +1,45 @@
 from .db import DB
 
+class PessoaDAO:
+    def insert_passageiro(self, nome, idade):
+        pass
+    
+    def remove_passageiro(self, id):
+        pass
+    
+    def get_passageiro_with_id(self, id):
+        pass
+    
+    def get_piloto_with_id(self, id):
+        pass
+    
+    def insert_piloto(self, nome, idade, numero_carteira):
+        pass
+    
+    def remove_piloto(self, id):
+        pass
+    
+    def get_all_pilotos(self):
+        pass
+    
+    def get_all_passageiros(self):
+        pass
+    
+    def get_all_pessoas(self):
+        pass
+    
+    def update_reserva_passageiro(self, id_passageiro, id_reserva):
+        pass
 
-class PessoaDB(DB):
+class PessoaDAOimp(DB, PessoaDAO):
+    
+    # Singleton, garate que só exista uma instancia dessa classe.
+    __instance = None
+    def __new__(cls):
+        if PessoaDAOimp.__instance is None:
+            PessoaDAOimp.__instance = super().__new__(cls)
+        return PessoaDAOimp.__instance
+    
     def __init__(self):
         super().__init__()
         

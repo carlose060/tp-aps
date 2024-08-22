@@ -83,7 +83,8 @@ class Window(QMainWindow):
        
         self.criarBtn(QLabel,'Media de assentos disponiveis por avião: ',6,0,3,18,CSS_BUTTON)
         todos_avioes = AviaoController().get_all()
-        media = sum([av.capacidade for av in todos_avioes])/len(todos_avioes)
+        try: media = sum([av.capacidade for av in todos_avioes])/len(todos_avioes)
+        except ZeroDivisionError: media = 0
         self.criarBtn(QLabel,f'{media}',6,19,3,3,CSS_FORM)
             
         self.criarBtn(QPushButton,'Voltar',18,0,3,7,CSS_BUTTON, self.menuPrincipal)

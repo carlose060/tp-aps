@@ -2,6 +2,13 @@ import sqlite3
 from pathlib import Path
 class DB:
 
+     # Singleton, garate que só exista uma instancia dessa classe.
+    __instance = None
+    def __new__(cls):
+        if DB.__instance is None:
+            DB.__instance = super().__new__(cls)
+        return DB.__instance
+    
     def __init__(self):
         try:
             self.conn = sqlite3.connect(str(Path.home()) + f'/Documentos/tp-aps/db.sqlite3')

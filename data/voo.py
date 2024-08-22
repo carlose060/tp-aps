@@ -1,7 +1,26 @@
 from .db import DB
 
-
-class VooDB(DB):
+class VooDAO:
+    def insert_voo(self, origem, destino, data, id_aviao, id_piloto):
+        pass
+    
+    def remove_voo(self, id_voo):
+        pass
+    
+    def get_all_voos(self):
+        pass
+    
+    def get_voo(self, id_voo):
+        pass
+    
+class VooDAOimp(DB, VooDAO):
+    # Singleton, garate que só exista uma instancia dessa classe.
+    __instance = None
+    def __new__(cls):
+        if VooDAOimp.__instance is None:
+            VooDAOimp.__instance = super().__new__(cls)
+        return VooDAOimp.__instance
+    
     def __init__(self):
         super().__init__()
         
