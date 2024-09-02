@@ -1,19 +1,6 @@
 from .db import DB
 
-class AviaoDAO:
-    def insert_aviao(self, aviao):
-        pass
-    
-    def remove_aviao(self, id_aviao):
-        pass
-    
-    def get_aviao_with_id(self, id_aviao):
-        pass
-    
-    def get_all_avioes(self):
-        pass
-
-class AviaoDAOimp(DB, AviaoDAO):
+class AviaoDAOimp(DB):
     
     # Singleton, garate que só exista uma instancia dessa classe.
     __instance = None
@@ -25,25 +12,25 @@ class AviaoDAOimp(DB, AviaoDAO):
     def __init__(self):
         super().__init__()
     
-    def insert_aviao(self, aviao):
+    def insert(self, aviao):
         self.execute(f'''
             INSERT INTO aviao (capacidade, modelo) VALUES ({aviao.capacidade}, '{aviao.modelo}')
         ''')
         self.commit()
         return self.cursor.lastrowid
     
-    def remove_aviao(self, id_aviao):
+    def remove(self, id_aviao):
         self.execute(f'''
             DELETE FROM aviao WHERE id = {id_aviao}
         ''')
         self.commit()
         
-    def get_aviao_with_id(self, id_aviao):
+    def get_with_id(self, id_aviao):
         self.execute(f'''
             SELECT * FROM aviao WHERE id = {id_aviao}
         ''')
         return self.cursor.fetchone()
     
-    def get_all_avioes(self):
+    def get_all(self):
         self.execute('SELECT * FROM aviao')
         return self.cursor.fetchall()

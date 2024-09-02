@@ -10,7 +10,7 @@ class VooController:
         piloto = PessoaController().get_piloto_with_id(int(piloto))
         voo = Voo(0, origem, destino, data, aviao, piloto)
         db = VooDAOimp()
-        id_voo = db.insert_voo(origem, destino, data, aviao.id, piloto.id)
+        id_voo = db.insert(origem, destino, data, aviao.id, piloto.id)
         db.close()
         voo.id = id_voo
         return True
@@ -19,7 +19,7 @@ class VooController:
     def get_all(self):
         list_voos = []
         db = VooDAOimp()
-        voos = db.get_all_voos()
+        voos = db.get_all()
         db.close()
         for voo in voos:
             aviao = AviaoController().get_with_id(int(voo[4]))
@@ -31,13 +31,13 @@ class VooController:
         if type(voo) == Voo:
             voo = voo.id
         db = VooDAOimp()
-        db.remove_voo(int(voo))
+        db.remove(int(voo))
         db.close()
         return True
     
     def get(self, id_voo):
         db = VooDAOimp()
-        voo = db.get_voo(int(id_voo))
+        voo = db.get_with_id(int(id_voo))
         db.close()
         aviao = AviaoController().get_with_id(int(voo[4]))
         piloto = PessoaController().get_piloto_with_id(int(voo[5]))

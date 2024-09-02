@@ -12,7 +12,7 @@ class ReservaController:
         voo = VooController().get(id_voo)
         reserva = Reserva(0, int(assento), voo, str(preco))
         db = ReservaDAOimp()
-        id_reserva = db.insert_reserva(reserva)
+        id_reserva = db.insert(reserva)
         reserva.id = id_reserva
         db.close()
         return reserva
